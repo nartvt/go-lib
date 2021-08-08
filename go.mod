@@ -1,4 +1,4 @@
-module go-lib
+module mysql-lib
 
 go 1.16
 

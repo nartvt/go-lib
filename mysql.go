@@ -8,16 +8,16 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type MariaDB struct {
+type MySQL struct {
 	conn *sql.DB
 }
 
 const URL = "%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 
-var Connection *MariaDB
+var Connection *MySQL
 
-func New(config ...Config) *MariaDB {
-	c := &MariaDB{}
+func New(config ...Config) *MySQL {
+	c := &MySQL{}
 	if len(config) > 0 {
 		_config := config[0]
 		c.Connect(_config)
@@ -26,11 +26,11 @@ func New(config ...Config) *MariaDB {
 	return c
 }
 
-func (c *MariaDB) GetConnection() interface{} {
+func (c *MySQL) GetConnection() interface{} {
 	return c.conn
 }
 
-func (c *MariaDB) Connect(config Config) {
+func (c *MySQL) Connect(config Config) {
 	address := fmt.Sprintf(
 		URL,
 		config.DbUsername,
@@ -46,7 +46,7 @@ func (c *MariaDB) Connect(config Config) {
 	c.conn = conn
 }
 
-func (c *MariaDB) Disconnect() {
+func (c *MySQL) Disconnect() {
 	err := c.conn.Close()
 	if err != nil {
 		log.Fatal("Failed to connect to MySQL database", err)
