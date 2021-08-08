@@ -3,6 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func initMysql() {
@@ -14,9 +17,11 @@ func initMysql() {
 	} else {
 		fmt.Println("Not Connect")
 	}
-	defer Connection.Disconnect()
+
 }
 
-func main() {
+func Test_main(t *testing.T) {
 	initMysql()
+	assert.True(t, Connection != nil)
+	defer Connection.Disconnect()
 }
