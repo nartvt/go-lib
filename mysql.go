@@ -1,4 +1,4 @@
-package golib
+package main
 
 import (
 	"database/sql"
@@ -9,14 +9,14 @@ import (
 )
 
 type MySQL struct {
-	conn *sql.DB
+	db *sql.DB
 }
 
 const URL = "%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 
-var Connection *MySQL
+var MysqlConnect *MySQL
 
-func New(config ...Config) *MySQL {
+func NewConnectionMySQL(config ...Config) *MySQL {
 	c := &MySQL{}
 	if len(config) > 0 {
 		_config := config[0]
@@ -26,8 +26,8 @@ func New(config ...Config) *MySQL {
 	return c
 }
 
-func (c *MySQL) GetConnection() interface{} {
-	return c.conn
+func (c *MySQL) GetConnectionMySQL() interface{} {
+	return c.db
 }
 
 func (c *MySQL) Connect(config Config) {
@@ -39,17 +39,23 @@ func (c *MySQL) Connect(config Config) {
 		config.DbPort,
 		config.DbName,
 	)
-	conn, err := sql.Open(config.DbDriver, address)
+	db, err := sql.Open(config.DbDriver, address)
 	if err != nil {
 		log.Fatal("Failed to connect to MySQL database", err)
 	}
-	c.conn = conn
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Successfully connected!")
+	c.db = db
 }
 
 func (c *MySQL) Disconnect() {
-	err := c.conn.Close()
+	err := c.db.Close()
 	if err != nil {
 		log.Fatal("Failed to connect to MySQL database", err)
 	}
-	log.Println("Disconnected from MariaDB")
+	log.Println("Disconnected from MySQL")
 }

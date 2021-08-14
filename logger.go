@@ -1,8 +1,9 @@
-package golib
+package main
 
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"time"
 )
 
@@ -15,20 +16,9 @@ const (
 	DEBUG      = "DEBUG"
 )
 
-func formatLog(message string, level string, err error, data ...interface{}) {
-	pc, fn, line, _ := runtime.Caller(1)
-	messagePrint := message
-	for _, val := range data {
-		messagePrint = fmt.Sprintf(messagePrint+" %v", val)
-	}
-	if err != nil {
-		messagePrint = fmt.Sprintf("%s %v", messagePrint, err.Error())
-	}
-	timeNow := time.Now()
-	fmt.Println(fmt.Sprintf("%s %s %s[%s:%d] - %s", timeNow.Format(formatTime), level, runtime.FuncForPC(pc).Name(), fn, line, messagePrint))
-}
-
 func Debug(message string, err error, data ...interface{}) {
+	lock := new(sync.Mutex)
+	lock.Lock()
 	pc, fn, line, _ := runtime.Caller(1)
 	messagePrint := message
 	for _, val := range data {
@@ -39,6 +29,7 @@ func Debug(message string, err error, data ...interface{}) {
 	}
 	timeNow := time.Now()
 	fmt.Println(fmt.Sprintf("%s %s %s[%s:%d] - %s", timeNow.Format(formatTime), DEBUG, runtime.FuncForPC(pc).Name(), fn, line, messagePrint))
+	defer lock.Unlock()
 }
 
 func Fatal(message string, err error, data ...interface{}) {
