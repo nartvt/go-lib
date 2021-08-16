@@ -8,10 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func initMysql() {
+func postgresqlInit() {
 	config := loadConfigFileName(".", ".env")
 	fmt.Println(config)
-	ConnectInstance = NewConnect("mysql", config)
+	ConnectInstance = NewConnect("postgres", config)
 	if ConnectInstance.GetConnection().(*sql.DB) != nil {
 		fmt.Println("Connected")
 	} else {
@@ -20,8 +20,8 @@ func initMysql() {
 
 }
 
-func Test_mysql(t *testing.T) {
-	initMysql()
+func Test_postgresql(t *testing.T) {
+	postgresqlInit()
 	assert.True(t, ConnectInstance != nil)
 	defer ConnectInstance.Disconnect()
 }
