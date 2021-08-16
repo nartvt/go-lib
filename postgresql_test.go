@@ -11,7 +11,7 @@ import (
 func postgresqlInit() {
 	config := loadConfigFileName(".", ".env")
 	fmt.Println(config)
-	ConnectInstance = NewInstance("postgres", config)
+	ConnectInstance = NewInstance(config)
 	if ConnectInstance.GetConnectInstance().(*sql.DB) != nil {
 		fmt.Println("Connected")
 	} else {

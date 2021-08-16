@@ -11,7 +11,7 @@ import (
 func initMysql() {
 	config := loadConfigFileName(".", ".env")
 	fmt.Println(config)
-	ConnectInstance = NewInstance("mysql", config)
+	ConnectInstance = NewInstance(config)
 	if ConnectInstance.GetConnectInstance().(*sql.DB) != nil {
 		fmt.Println("Connected")
 	} else {

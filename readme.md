@@ -37,7 +37,7 @@ type User struct {
 
 func main() {
     initPostgresql()
-    sqlString := "select id, number from test_table"
+    sqlString := "select id, number from user"
     sqlQuery := ConnectInstance.GetConnectInstance().(*sql.DB)
     row := sqlQuery.QueryRow(sqlString)
     users := make([]User, 2)
