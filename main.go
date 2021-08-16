@@ -10,8 +10,8 @@ import (
 func initPostgresql() {
 	config := loadConfigFileName(".", ".env")
 	fmt.Println(config)
-	PostgreConnect = NewConnectPostgresSQL(config)
-	if PostgreConnect.GetConnectPostgresSQL().(*sql.DB) != nil {
+	ConnectInstance = NewInstance(config)
+	if ConnectInstance.GetConnectInstance().(*sql.DB) != nil {
 		fmt.Println("Connected")
 	} else {
 		fmt.Println("Not Connect")
@@ -26,7 +26,7 @@ type User struct {
 func main() {
 	initPostgresql()
 	sqlString := "select id, number from test_table"
-	sqlQuery := PostgreConnect.GetConnectPostgresSQL().(*sql.DB)
+	sqlQuery := ConnectInstance.GetConnectInstance().(*sql.DB)
 	row := sqlQuery.QueryRow(sqlString)
 	users := make([]User, 2)
 	if row != nil {
@@ -39,6 +39,5 @@ func main() {
 
 	}
 	fmt.Println(users)
-
 	//defer sqlQuery.Close()
 }

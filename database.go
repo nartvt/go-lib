@@ -26,9 +26,9 @@ type DatabaseSQL struct {
 
 var ConnectInstance *DatabaseSQL
 
-func NewInstance(instance string, config Config) *DatabaseSQL {
+func NewInstance(config Config) *DatabaseSQL {
 	c := &DatabaseSQL{}
-	c.instance(instance, config)
+	c.instance(config)
 	return c
 }
 
@@ -36,7 +36,7 @@ func (c *DatabaseSQL) GetConnectInstance() interface{} {
 	return c.db
 }
 
-func (c *DatabaseSQL) instance(databaseInstance string, config Config) {
+func (c *DatabaseSQL) instance(config Config) {
 	switch config.DbDriver {
 	case "mysql":
 		c.instanceName = config.DbDriver
@@ -47,7 +47,7 @@ func (c *DatabaseSQL) instance(databaseInstance string, config Config) {
 		c.url = postgresqlUrl
 		c.connect(config)
 	default:
-		log.Fatal(fmt.Sprintf("not handler this database %s", databaseInstance))
+		log.Fatal(fmt.Sprintf("not handler this database %s", config.DbDriver))
 	}
 }
 
