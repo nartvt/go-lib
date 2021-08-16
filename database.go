@@ -26,13 +26,13 @@ type DatabaseSQL struct {
 
 var ConnectInstance *DatabaseSQL
 
-func NewConnect(instance string, config Config) *DatabaseSQL {
+func NewInstance(instance string, config Config) *DatabaseSQL {
 	c := &DatabaseSQL{}
 	c.instance(instance, config)
 	return c
 }
 
-func (c *DatabaseSQL) GetConnection() interface{} {
+func (c *DatabaseSQL) GetConnectInstance() interface{} {
 	return c.db
 }
 
